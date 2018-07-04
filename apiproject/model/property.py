@@ -1,4 +1,5 @@
-from marshmallow import post_load, Schema
+from flask import json
+from marshmallow import post_load, Schema, fields
 
 
 class Property():
@@ -11,12 +12,17 @@ class Property():
         self.caracteristic = caracteristic
         self.owner = owner
 
-    def __repr__(self):
-        return '<Property(name={self.description!r})>'.format(self=self)
-
 
 class PropertySchema(Schema):
+    name = fields.Str(load_from='name')
+    description = fields.Str(load_from='description')
+    type = fields.Str(load_from='type')
+    city = fields.Str(load_from='city')
+    pieces_number = fields.Int(load_from='pieces_number')
+    caracteristic = fields.Str(load_from='caracteristic')
+    owner = fields.Str(load_from='owner')
+
     @post_load
-    def make_income(self, data):
+    def add_property(self, data):
         return Property(**data)
 
