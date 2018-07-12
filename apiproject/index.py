@@ -1,20 +1,19 @@
-from flask import Flask, jsonify, request
-from apiproject.model.property import PropertySchema
+from flask import jsonify, request, url_for
+from flask_api import FlaskAPI, status, exceptions
 
-app = Flask(__name__)
+# from apiproject.model.property import PropertySchema
+from apiproject.model.property import property_repr, properties
 
-properties = []
+app = FlaskAPI(__name__)
+
+@app.route('/properties', methods=['GET', 'POST'])
+def properties_list():
+    if request.method == 'POST':
+        property = str(request.json)
+        max(properties.keys()) + 1 if id else 0
+        properties[id] = property
+        return property_repr(id), status.HTTP_201_CREATED
+    return [property_repr(id) for id in sorted(properties.keys())]
 
 
-@app.route('/properties', methods=['GET'])
-def get_properties():
-    schema = PropertySchema()
-    result = schema.dump(properties)
-    return jsonify(result)
 
-
-@app.route('/properties', methods=['POST'])
-def add_property():
-    property = PropertySchema().load(request.get_json())
-    properties.append(property)
-    return '', 204
